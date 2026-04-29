@@ -1,38 +1,60 @@
 from manim import *
 import random
 import warnings
+import json
+import os
 warnings.filterwarnings("ignore")
 
 Text.set_default(font="sans-serif")
 
 class LBPAnimation(Scene):
     def construct(self):
+        # Load voice data
+        voice_data_path = os.path.join(os.path.dirname(__file__), "voice_data.json")
+        with open(voice_data_path, "r", encoding="utf-8") as f:
+            voice_data = json.load(f)
+
+        self.current_sub = VGroup()
+        
+        def sub(text_str):
+            if not text_str:
+                self.play(FadeOut(self.current_sub), run_time=0.5)
+                self.current_sub = VGroup()
+                return
+            
+            new_sub = Text(text_str, font_size=24, color=WHITE).to_edge(DOWN, buff=0.3)
+            new_sub.add_background_rectangle(color=BLACK, opacity=0.8, buff=0.15)
+            if len(self.current_sub) > 0:
+                self.play(ReplacementTransform(self.current_sub, new_sub), run_time=0.5)
+            else:
+                self.play(FadeIn(new_sub), run_time=0.5)
+            self.current_sub = new_sub
+
         # ----------------------------------------------------
         # Scene 1: Đặt vấn đề
         # ----------------------------------------------------
         try:
             face = ImageMobject("face.png").scale(1.5)
         except Exception:
-            # Fallback if image not found
             face = Rectangle(width=6, height=8, fill_color=GRAY, fill_opacity=1)
         
         self.play(FadeIn(face))
+        sub(voice_data["intro_1"])
         self.wait(1)
         
-        # Overlay for lighting change
+        sub(voice_data["intro_2"])
         lighting_overlay = Rectangle(width=14, height=8, fill_color=WHITE, fill_opacity=0)
         self.add(lighting_overlay)
         
         self.play(lighting_overlay.animate.set_fill(opacity=0.6), run_time=1)
+        sub(voice_data["intro_3"])
         self.play(lighting_overlay.animate.set_fill(BLACK, opacity=0.8), run_time=1)
         self.play(lighting_overlay.animate.set_fill(WHITE, opacity=0), run_time=1)
-        
         self.wait(1)
         
-        # Zoom into the face
+        sub(voice_data["intro_4"])
         self.play(face.animate.scale(4).shift(DOWN*4 + RIGHT*2), run_time=2)
         
-        # Transition to a 8x8 Grid representing pixel values
         pixel_grid = VGroup()
         for i in range(8):
             for j in range(8):
@@ -43,9 +65,10 @@ class LBPAnimation(Scene):
                 pixel_grid.add(VGroup(cell, text))
                 
         self.play(FadeOut(face), FadeIn(pixel_grid))
+        sub(voice_data["intro_5"])
         self.wait(2)
         
-        # Highlight a 3x3 region
+        sub(voice_data["intro_6"])
         region_3x3 = VGroup()
         for i in range(2, 5):
             for j in range(2, 5):
@@ -57,7 +80,9 @@ class LBPAnimation(Scene):
         )
         self.wait(1)
         
+        sub(voice_data["intro_7"])
         self.play(FadeOut(pixel_grid))
+        self.wait(1)
         
         # ----------------------------------------------------
         # Scene 2: Ma trận 3x3 và Ngưỡng hóa
@@ -80,24 +105,29 @@ class LBPAnimation(Scene):
                 cells.append(cell)
                 texts.append(text)
                 
+        sub(voice_data["lbp_1"])
         self.play(ReplacementTransform(region_3x3, grid))
         self.wait(1)
         
+        sub(voice_data["lbp_2"])
+        self.wait(1)
+        
+        sub(voice_data["lbp_3"])
         center_cell = cells[4]
         center_text = texts[4]
         center_val = values[1][1] # 95
         
-        # Highlight center
         self.play(center_cell.animate.set_fill(YELLOW, opacity=0.5))
+        self.wait(1)
         
+        sub(voice_data["lbp_4"])
         threshold_arrow = Arrow(start=RIGHT*3 + UP*0, end=center_cell.get_right(), color=YELLOW)
         threshold_text = Text("Threshold", font_size=32, color=YELLOW).next_to(threshold_arrow, RIGHT)
-        
         self.play(GrowArrow(threshold_arrow), Write(threshold_text))
         self.wait(2)
         self.play(FadeOut(threshold_arrow), FadeOut(threshold_text))
         
-        # Order: Top-Left, Top-Mid, Top-Right, Right, Bottom-Right, Bottom-Mid, Bottom-Left, Left
+        sub(voice_data["lbp_5"])
         neighbors_indices = [0, 1, 2, 5, 8, 7, 6, 3]
         binary_values = []
         binary_texts = []
@@ -107,24 +137,28 @@ class LBPAnimation(Scene):
             bin_val = 1 if val >= center_val else 0
             binary_values.append(bin_val)
             
-            # Show comparison
             comp_str = "≥" if bin_val == 1 else "<"
             comp_tex = Text(comp_str, font_size=48).move_to(cells[idx].get_center())
             self.play(FadeOut(texts[idx]), FadeIn(comp_tex), run_time=0.2)
-            self.wait(0.1)
             
             self.play(cells[idx].animate.set_fill(GREEN if bin_val == 1 else RED, opacity=0.3), run_time=0.2)
             
+            if idx == 2:  # After 3 elements, show next sub
+                sub(voice_data["lbp_6"])
+                
             new_text = Text(str(bin_val), font_size=40, color=GREEN if bin_val == 1 else RED).move_to(cells[idx].get_center())
             self.play(ReplacementTransform(comp_tex, new_text), run_time=0.2)
             binary_texts.append(new_text)
             
+        sub(voice_data["lbp_7"])
+        self.wait(1.5)
+        sub(voice_data["lbp_8"])
         self.wait(2)
         
         # ----------------------------------------------------
         # Scene 3: Chuyển đổi sang thập phân
         # ----------------------------------------------------
-        # Move grid up
+        sub(voice_data["dec_1"])
         self.play(grid.animate.scale(0.8).shift(UP * 1.5))
         
         bin_group = VGroup()
@@ -134,35 +168,40 @@ class LBPAnimation(Scene):
         
         bin_group.arrange(RIGHT, buff=0.2).next_to(grid, DOWN, buff=1)
         
-        # Animate digits moving down
         moves = []
         for i, idx in enumerate(neighbors_indices):
             moves.append(ReplacementTransform(binary_texts[i].copy(), bin_group[i]))
             
         self.play(*moves)
-        self.wait(1)
+        sub(voice_data["dec_2"])
+        self.wait(1.5)
         
-        formula_str = "1 × 2⁷ + 1 × 2⁶ + 0 × 2⁵ + 0 × 2⁴ + 0 × 2³ + 0 × 2² + 0 × 2¹ + 1 × 2⁰ = 193"
-        formula_tex = Text(formula_str, font_size=32).next_to(bin_group, DOWN, buff=0.8)
+        sub(voice_data["dec_3"])
+        formula_str = "1×2⁷ + 1×2⁶ + 0×2⁵ + 0×2⁴ + 0×2³ + 0×2² + 0×2¹ + 1×2⁰ = 193"
+        formula_tex = Text(formula_str, font_size=28).next_to(bin_group, DOWN, buff=0.8)
         
         self.play(Write(formula_tex))
         self.wait(2)
         
-        # Move result back to center
         result_text = Text("193", font_size=48, color=YELLOW)
         result_text.move_to(center_cell.get_center())
         
+        sub(voice_data["dec_4"])
         self.play(
             FadeOut(bin_group),
             FadeOut(formula_tex),
             ReplacementTransform(center_text, result_text)
         )
         self.play(Flash(center_cell, color=YELLOW))
+        self.wait(1.5)
+        
+        sub(voice_data["dec_5"])
         self.wait(2)
         
         # ----------------------------------------------------
         # Scene 4: Không gian Vector
         # ----------------------------------------------------
+        sub(voice_data["vec_1"])
         self.play(FadeOut(grid))
         
         large_grid = VGroup(*[Square(side_length=0.8, color=WHITE) for _ in range(16)])
@@ -172,8 +211,10 @@ class LBPAnimation(Scene):
         self.play(FadeIn(large_grid))
         self.wait(1)
         
-        # Histogram 1
+        sub(voice_data["vec_2"])
         self.play(large_grid[5].animate.set_fill(BLUE, opacity=0.5))
+        
+        sub(voice_data["vec_3"])
         chart_1 = BarChart(
             values=[15, 30, 45, 20, 10, 50],
             y_range=[0, 60, 20],
@@ -184,7 +225,6 @@ class LBPAnimation(Scene):
         ).next_to(large_grid, RIGHT, buff=1).shift(UP * 1)
         self.play(Create(chart_1))
         
-        # Histogram 2
         self.play(large_grid[10].animate.set_fill(GREEN, opacity=0.5))
         chart_2 = BarChart(
             values=[40, 10, 25, 35, 15, 20],
@@ -197,7 +237,7 @@ class LBPAnimation(Scene):
         self.play(Create(chart_2))
         self.wait(1)
         
-        # Concatenate into Vector
+        sub(voice_data["vec_4"])
         vector_1 = Rectangle(width=2.5, height=0.6, color=BLUE, fill_color=BLUE, fill_opacity=0.8)
         vector_2 = Rectangle(width=2.5, height=0.6, color=GREEN, fill_color=GREEN, fill_opacity=0.8)
         dots = Text("...", font_size=48)
@@ -210,19 +250,28 @@ class LBPAnimation(Scene):
             ReplacementTransform(chart_2, vector_2),
             FadeIn(dots)
         )
+        
+        sub(voice_data["vec_5"])
         self.play(Write(fv_text))
-        self.wait(3)
-
+        self.wait(1.5)
+        
+        sub(voice_data["vec_6"])
+        self.wait(2)
+        
+        sub(voice_data["vec_7"])
+        self.wait(2)
+        
         # ----------------------------------------------------
         # End Scene
         # ----------------------------------------------------
+        sub(voice_data["outro"])
         self.play(
             FadeOut(large_grid),
             FadeOut(feature_vector),
             FadeOut(fv_text)
         )
-        end_text = Text("Cảm ơn các bạn đã theo dõi!", font_size=48, color=YELLOW)
-        hashtag = Text("#LocalBinaryPatterns #AI", font_size=32, color=BLUE).next_to(end_text, DOWN, buff=0.5)
+        end_text = Text("Đơn giản, hiệu quả và thanh lịch. Đó là Local Binary Patterns!", font_size=28, color=YELLOW)
+        hashtag = Text("#LocalBinaryPatterns #AI", font_size=24, color=BLUE).next_to(end_text, DOWN, buff=0.5)
         self.play(Write(end_text))
         self.play(FadeIn(hashtag))
         self.wait(3)
