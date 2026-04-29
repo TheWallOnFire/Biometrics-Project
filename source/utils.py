@@ -18,7 +18,7 @@ class SubtitleManager:
         wrapped_text = "\n".join(textwrap.wrap(text_str, width=60))
             
         new_sub = Text(wrapped_text, font_size=24, color=WHITE).to_edge(DOWN, buff=0.3)
-        new_sub.add_background_rectangle(color=BLACK, opacity=0.8, buff=0.15)
+        new_sub.add_background_rectangle(color=DARK_GRAY, opacity=1.0, buff=0.15)
         
         if len(self.current_sub) > 0:
             self.scene.play(ReplacementTransform(self.current_sub, new_sub), run_time=0.5)
@@ -144,21 +144,49 @@ def create_3x3_grid(values):
 
 def generate_all_audio(voice_data, output_dir="media/audio"):
     """
-    Generate audio files for all strings in voice_data using gTTS.
-    Skips generation if the file already exists to save time.
+    Generate audio files for all strings in voice_data using edge-tts (Microsoft Neural).
+    Higher quality and more natural than gTTS. Parallel generation for speed.
     """
     import os
-    from gtts import gTTS
+    import asyncio
+    import edge_tts
     
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
         
-    for key, text in voice_data.items():
-        if not text:
-            continue
+    async def _gen_single(key, text, file_path):
+        # Chỉ tạo nếu chưa có hoặc có thể ghi đè tùy ý
+        # Ở đây ta giữ nguyên logic kiểm tra tồn tại để tránh gọi API quá nhiều
+        if os.path.exists(file_path) and os.path.getsize(file_path) > 0:
+            return
             
-        file_path = os.path.join(output_dir, f"{key}.mp3")
-        if not os.path.exists(file_path):
-            print(f"Generating audio for {key}...")
-            tts = gTTS(text, lang='vi')
-            tts.save(file_path)
+        try:
+            print(f"Generating audio for: {key}...")
+            communicate = edge_tts.Communicate(text, "vi-VN-NamMinhNeural")
+            await communicate.save(file_path)
+        except Exception as e:
+            print(f"Error generating {key}: {e}")
+
+    async def _generate():
+        tasks = []
+        for key, text in voice_data.items():
+            if not text:
+                continue
+            file_path = os.path.join(output_dir, f"{key}.mp3")
+            tasks.append(_gen_single(key, text, file_path))
+        
+        if tasks:
+            await asyncio.gather(*tasks)
+
+    try:
+        # Chạy loop mới
+        asyncio.run(_generate())
+    except RuntimeError:
+        # Nếu đã có loop đang chạy (trong một số môi trường đặc biệt)
+        try:
+            loop = asyncio.get_event_loop()
+            loop.run_until_complete(_generate())
+        except Exception as e:
+            print(f"Could not start asyncio: {e}")
+        except Exception as e:
+            print(f"General error: {e}")

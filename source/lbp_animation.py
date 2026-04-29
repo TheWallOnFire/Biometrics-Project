@@ -15,7 +15,8 @@ class LBPAnimation(Scene):
         with open(voice_data_path, "r", encoding="utf-8") as f:
             voice_data = json.load(f)
 
-        audio_dir = os.path.join(os.path.dirname(__file__), "media", "audio")
+        project_root = os.path.dirname(os.path.dirname(__file__))
+        audio_dir = os.path.join(project_root, "media", "audio")
         generate_all_audio(voice_data, audio_dir)
 
         sub_manager = SubtitleManager(self)
@@ -58,8 +59,10 @@ class LBPAnimation(Scene):
         # ----------------------------------------------------
         # Scene 1: Đặt vấn đề
         # ----------------------------------------------------
-        # Tạo icon đại diện cho khuôn mặt thay vì dùng file ảnh ngoài
-        face = create_face_icon()
+        # Sử dụng ảnh chân dung thực tế thay vì icon
+        face_path = os.path.join(os.path.dirname(__file__), "face_sample.png")
+        face = ImageMobject(face_path).scale(1.5)
+        face.add_background_rectangle(color=WHITE, buff=0.1, opacity=1)
         
         self.play(FadeIn(face))
         sub("intro_1")
@@ -107,9 +110,9 @@ class LBPAnimation(Scene):
         # Scene 2: Ma trận 3x3 và Ngưỡng hóa
         # ----------------------------------------------------
         values = [
-            [120, 110, 85],
-            [100, 95, 60],
-            [80, 50, 90]
+            [210, 215, 220],
+            [200, 205, 215],
+            [60, 65, 70]
         ]
         
         grid, cells, texts = create_3x3_grid(values)
@@ -124,7 +127,7 @@ class LBPAnimation(Scene):
         sub("lbp_3")
         center_cell = cells[4]
         center_text = texts[4]
-        center_val = values[1][1] # 95
+        center_val = 205 # values[1][1]
         
         self.play(center_cell.animate.set_fill(YELLOW, opacity=0.5))
         self.wait(1)
@@ -188,13 +191,13 @@ class LBPAnimation(Scene):
         self.wait(1.5)
         
         sub("dec_3")
-        formula_str = "1×2⁷ + 1×2⁶ + 0×2⁵ + 0×2⁴ + 0×2³ + 0×2² + 0×2¹ + 1×2⁰ = 193"
+        formula_str = "1×2⁷ + 1×2⁶ + 1×2⁵ + 1×2⁴ + 0×2³ + 0×2² + 0×2¹ + 0×2⁰ = 240"
         formula_tex = Text(formula_str, font_size=28).next_to(bin_group, DOWN, buff=0.8)
         
         self.play(Write(formula_tex))
         self.wait(2)
         
-        result_text = Text("193", font_size=48, color=YELLOW)
+        result_text = Text("240", font_size=48, color=YELLOW)
         result_text.move_to(center_cell.get_center())
         
         sub("dec_4")
