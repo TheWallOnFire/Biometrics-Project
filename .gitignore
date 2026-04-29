@@ -216,3 +216,11 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Manim generated files
+media/
+source/media/
+*.png
+*.jpg
+*.jpeg
+*.mp4
