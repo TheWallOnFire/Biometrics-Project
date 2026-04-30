@@ -1,0 +1,26 @@
+{
+  "title_name": "Chào mừng bạn đến với bài tìm hiểu về Local Binary Patterns.",
+  "title_intro": "Trong video này, chúng ta sẽ đi qua 6 phần chính để hiểu sâu về thuật toán này.",
+  
+  "part_2_list": "Trong thế giới nhận diện khuôn mặt, có rất nhiều thuật toán nổi tiếng như PCA, Eigenfaces, HOG hay SIFT.",
+  "part_2_pick": "Tuy nhiên, hôm nay chúng ta sẽ tập trung vào LBP - một phương pháp cực kỳ mạnh mẽ nhờ tính đơn giản và hiệu quả.",
+  
+  "part_3_logic": "Nguyên lý của LBP là so sánh cường độ sáng của một điểm ảnh với các điểm lân cận để tạo ra một mã nhị phân.",
+  
+  "demo_1_title": "Ví dụ 1: Tính toán chi tiết.",
+  "demo_1_step_1": "Đầu tiên, ta chọn điểm trung tâm làm ngưỡng.",
+  "demo_1_step_2": "Sau đó, so sánh với các điểm xung quanh.",
+  "demo_1_step_3": "Kết quả so sánh tạo ra chuỗi nhị phân.",
+  "demo_1_step_4": "Kết quả đổi sang thập phân là 240.",
+  
+  "demo_2_title": "Ví dụ 2: Khả năng kháng ánh sáng.",
+  "demo_2_step_1": "Khi tăng độ sáng, ngưỡng sẽ cao hơn.",
+  "demo_2_robust_result": "Giống hệt lúc nãy.",
+  "demo_2_step_3": "Mã LBP vẫn không thay đổi.",
+  
+  "pros_cons_title": "Tại sao lại dùng LBP?",
+  "pros_1": "Ưu điểm: Tốc độ xử lý cực nhanh, không phụ thuộc vào cường độ ánh sáng đồng nhất.",
+  "cons_1": "Nhược điểm: Nhạy cảm với nhiễu ở các vùng ảnh phẳng và vector đặc trưng có thể rất lớn.",
+  
+  "conclusion": "Tóm lại, LBP là một công cụ nền tảng, thanh lịch và vẫn rất hiệu quả trong các ứng dụng thị giác máy tính hiện đại."
+}

@@ -18,7 +18,9 @@ class SubtitleManager:
         wrapped_text = "\n".join(textwrap.wrap(text_str, width=60))
             
         new_sub = Text(wrapped_text, font_size=24, color=WHITE).to_edge(DOWN, buff=0.3)
-        new_sub.add_background_rectangle(color=DARK_GRAY, opacity=1.0, buff=0.15)
+        new_sub.set_z_index(100)
+        new_sub.add_background_rectangle(color=BLACK, opacity=0.3, buff=0.15)
+        new_sub.background_rectangle.set_z_index(99)
         
         if len(self.current_sub) > 0:
             self.scene.play(ReplacementTransform(self.current_sub, new_sub), run_time=0.5)
@@ -142,51 +144,56 @@ def create_3x3_grid(values):
             texts.append(text)
     return grid, cells, texts
 
-def generate_all_audio(voice_data, output_dir="media/audio"):
-    """
-    Generate audio files for all strings in voice_data using edge-tts (Microsoft Neural).
-    Higher quality and more natural than gTTS. Parallel generation for speed.
-    """
+async def async_generate_all_audio(voice_data, output_dir="media/audio"):
+    """Core async function to generate audio files."""
     import os
-    import asyncio
     import edge_tts
     
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
         
     async def _gen_single(key, text, file_path):
-        # Chỉ tạo nếu chưa có hoặc có thể ghi đè tùy ý
-        # Ở đây ta giữ nguyên logic kiểm tra tồn tại để tránh gọi API quá nhiều
-        if os.path.exists(file_path) and os.path.getsize(file_path) > 0:
-            return
+        if os.path.exists(file_path):
+            if os.path.getsize(file_path) > 0:
+                return
+            else:
+                os.remove(file_path)
             
         try:
             print(f"Generating audio for: {key}...")
+            # Unify to a single voice for consistency
             communicate = edge_tts.Communicate(text, "vi-VN-NamMinhNeural")
             await communicate.save(file_path)
+            
+            if os.path.exists(file_path) and os.path.getsize(file_path) == 0:
+                os.remove(file_path)
         except Exception as e:
             print(f"Error generating {key}: {e}")
+            if os.path.exists(file_path):
+                os.remove(file_path)
 
-    async def _generate():
-        tasks = []
-        for key, text in voice_data.items():
-            if not text:
-                continue
-            file_path = os.path.join(output_dir, f"{key}.mp3")
-            tasks.append(_gen_single(key, text, file_path))
-        
-        if tasks:
-            await asyncio.gather(*tasks)
+    tasks = []
+    for key, text in voice_data.items():
+        if not text:
+            continue
+        file_path = os.path.join(output_dir, f"{key}.mp3")
+        tasks.append(_gen_single(key, text, file_path))
+    
+    if tasks:
+        for task in tasks:
+            await task
 
+def generate_all_audio(voice_data, output_dir="media/audio"):
+    """Sync wrapper for generate_all_audio."""
+    import asyncio
     try:
-        # Chạy loop mới
-        asyncio.run(_generate())
+        # Check if we are already in an event loop
+        loop = asyncio.get_event_loop()
+        if loop.is_running():
+            # If running, we can't use run_until_complete. 
+            # This case is handled by calling async_generate_all_audio directly in async scripts.
+            print("Warning: Event loop already running. Audio generation skipped in sync wrapper.")
+            return
+        loop.run_until_complete(async_generate_all_audio(voice_data, output_dir))
     except RuntimeError:
-        # Nếu đã có loop đang chạy (trong một số môi trường đặc biệt)
-        try:
-            loop = asyncio.get_event_loop()
-            loop.run_until_complete(_generate())
-        except Exception as e:
-            print(f"Could not start asyncio: {e}")
-        except Exception as e:
-            print(f"General error: {e}")
+        asyncio.run(async_generate_all_audio(voice_data, output_dir))
