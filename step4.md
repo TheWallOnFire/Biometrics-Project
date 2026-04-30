@@ -1,63 +1,59 @@
-# Bước 4: Kịch bản Thuyết minh (Voiceover Script) & Phụ đề
+# Bước 4: Kịch bản và Phụ đề (Final Version)
 
-Dưới đây là kịch bản thuyết minh chi tiết được thiết kế để khớp hoàn hảo với nhịp độ hình ảnh (animations) của thư viện Manim. Các câu thoại dưới đây sẽ được sử dụng làm **phụ đề (subtitle)** trực tiếp trong video để giải thích chi tiết thuật toán Local Binary Patterns (LBP).
-
-**Mẹo thu âm/AI Voice:**
-- Hãy đọc với giọng điệu kể chuyện (storytelling) tự nhiên, có sự tò mò ở phần đầu và sự hứng khởi khi giải quyết được bài toán.
-- Chú ý các khoảng **[PAUSE]** - đây là lúc bạn ngừng đọc khoảng 1-2 giây để nhường sự chú ý cho hoạt ảnh Manim đang chạy trên màn hình.
+Kịch bản này đã được tối ưu hóa cho giọng đọc **NamMinhNeural** với phong cách trò chuyện tự nhiên, thân thiện.
 
 ---
 
-## Cảnh 1: Đặt vấn đề (Thời lượng: ~25s)
+## 📽️ Cấu trúc Video (6 Phần)
 
-**Giọng đọc & Phụ đề:** 
-1. "Hãy tưởng tượng bạn đang xây dựng một hệ thống nhận diện khuôn mặt."
-2. "Mọi thứ hoạt động hoàn hảo trong phòng thí nghiệm. Nhưng khi mang ra ngoài đời thực..."
-3. "...ánh sáng từ cửa sổ hay bóng râm sẽ làm bức ảnh thay đổi hoàn toàn."
-4. **[PAUSE 1s]** 
-5. "Đối với máy tính, hình ảnh chỉ là một ma trận các con số biểu diễn độ sáng."
-6. "Khi ánh sáng thay đổi, các con số này nhảy múa hỗn loạn."
-7. "Vậy làm sao để máy tính hiểu được đâu là khuôn mặt mà không bị đánh lừa bởi ánh sáng?"
-8. "Câu trả lời nằm ở một thuật toán vô cùng thanh lịch: Local Binary Patterns - LBP."
+### 1. Tiêu đề và Giới thiệu
+- **Hình ảnh**: Tiêu đề "Local Binary Patterns" và tên người thực hiện.
+- **Lời dẫn**: "Chào bạn! Hôm nay chúng ta sẽ cùng nhau tìm hiểu về một thuật toán rất hay trong nhận dạng khuôn mặt, đó là LBP."
+- **Visual**: Chuyển sang danh sách 6 phần chính.
+- **Lời dẫn**: "Mình sẽ chia sẻ với các bạn sáu phần nội dung chính để chúng ta nắm vững kiến thức này nhé."
+
+### 2. Liệt kê Thuật toán
+- **Hình ảnh**: Danh sách các thuật toán (PCA, Eigenfaces, HOG, SIFT).
+- **Lời dẫn**: "Chắc bạn đã nghe qua những cái tên như PCA hay SIFT rồi đúng không? Chúng đều rất nổi tiếng."
+- **Visual**: Nhấn mạnh (Indicate) vào LBP.
+- **Lời dẫn**: "But LBP lại có sức hút riêng nhờ sự đơn giản mà lại vô cùng hiệu quả."
+
+### 3. Nguyên lý cơ bản
+- **Hình ảnh**: Một tấm ảnh khuôn mặt với một ô vuông vàng quét qua (Sliding Window).
+- **Lời dẫn**: "Về cơ bản, LBP sẽ so sánh từng điểm ảnh với các điểm xung quanh để tìm ra quy luật của ánh sáng."
+
+### 4. Ví dụ Demo chi tiết
+#### Ví dụ 1: Quy trình tính toán
+- **Visual**: Ma trận 3x3 với các giá trị cường độ sáng.
+- **Lời dẫn**: "Hãy cùng mình thực hiện một phép tính cụ thể để bạn dễ hình dung hơn nhé."
+- **Step 1**: Chọn điểm trung tâm. "Đầu tiên, chúng mình sẽ lấy điểm ở chính giữa để làm chuẩn."
+- **Step 2**: So sánh với 8 điểm bao quanh. "Sau đó, ta đem so sánh nó với tám điểm bao quanh."
+- **Step 3**: Chuỗi nhị phân hiện ra. "Từ đó, một chuỗi số nhị phân sẽ được hình thành."
+- **Step 4**: Kết quả thập phân. "Cuối cùng, kết quả là hai trăm bốn mươi."
+
+#### Ví dụ 2: Khả năng kháng ánh sáng
+- **Visual**: Ma trận 3x3 sáng hơn, nhưng kết quả LBP vẫn là 240.
+- **Lời dẫn**: "Một ưu điểm tuyệt vời của LBP là nó không hề sợ ánh sáng thay đổi."
+- **Lời dẫn**: "Bạn thấy đấy, dù mình có tăng độ sáng lên thì các bước so sánh vẫn diễn ra y hệt."
+- **Lời dẫn**: "Kết quả vẫn không hề thay đổi so với lúc trước."
+- **Lời dẫn**: "Điều này chứng tỏ mã LBP cực kỳ ổn định."
+
+### 5. Ứng dụng: Under the Hood
+- **Visual**: Con số 240 nhân bản ra hàng ngàn điểm trên toàn bộ khuôn mặt.
+- **Lời dẫn**: "Hãy cùng quan sát quy trình bên trong nhé."
+- **Lời dẫn**: "Con số hai trăm bốn mươi chỉ là một phần rất nhỏ thôi."
+- **Lời dẫn**: "Máy tính sẽ lặp đi lặp lại việc này trên toàn bộ khuôn mặt của bạn."
+- **Visual**: Biểu đồ tần suất (Histogram) được tạo ra.
+- **Lời dẫn**: "Sau đó, tất cả sẽ được thống kê lại thật chi tiết."
+- **Lời dẫn**: "Đây chính là mã định danh kỹ thuật số dành riêng cho bạn."
+- **Lời dẫn**: "Và thế là, việc nhận diện đã thành công tốt đẹp."
+
+### 6. Tổng kết
+- **Visual**: Bảng ưu và nhược điểm.
+- **Lời dẫn**: "Tất nhiên, cái gì cũng có hai mặt của nó."
+- **Lời dẫn**: "Ưu điểm của LBP là nhanh và không ngại ánh sáng."
+- **Lời dẫn**: "Hạn chế là nó khá nhạy cảm với nhiễu."
+- **Lời dẫn**: "Cảm ơn các bạn đã dành thời gian theo dõi video về LBP của mình nhé."
 
 ---
-
-## Cảnh 2: Ma trận 3x3 và Ngưỡng hóa (Thời lượng: ~45s)
-
-**Giọng đọc & Phụ đề:** 
-9. "Ý tưởng cốt lõi của LBP rất đơn giản."
-10. "Đừng quan tâm một điểm ảnh có độ sáng chính xác là bao nhiêu."
-11. "Hãy chỉ hỏi một câu: Nó sáng hơn hay tối hơn những người hàng xóm của nó?"
-12. **[PAUSE 1.5s]**
-13. "Hãy trích xuất một ô vuông 3x3. Chúng ta sẽ dùng điểm ảnh ở chính giữa làm Ngưỡng."
-14. "Giờ hãy quét vòng quanh. Bất kỳ điểm ảnh lân cận nào lớn hơn hoặc bằng điểm trung tâm..."
-15. "...ta cho nó giá trị 1. Ngược lại, nếu nhỏ hơn, ta cho nó giá trị 0."
-16. "Chú ý này, dù toàn bộ bức ảnh bị làm sáng lên..."
-17. "...khoảng cách tương đối này vẫn không đổi! Đó chính là phép thuật kháng ánh sáng của LBP."
-18. **[PAUSE 2s]**
-
----
-
-## Cảnh 3: Chuyển đổi nhị phân (Thời lượng: ~25s)
-
-**Giọng đọc & Phụ đề:**
-19. "Tuyệt vời! Bây giờ, hãy lấy các số 0 và 1 này, đọc theo chiều kim đồng hồ."
-20. "Ta sẽ có được một chuỗi nhị phân 8 bit."
-21. "Dùng một chút toán học cơ bản, ta đổi chuỗi nhị phân này thành một số thập phân."
-22. **[PAUSE 1s]**
-23. "Con số mới này sẽ thay thế cho điểm ảnh trung tâm ban đầu."
-24. "Nó không còn đại diện cho độ sáng nữa, mà là một mã tóm tắt hình dáng cục bộ."
-
----
-
-## Cảnh 4: Không gian Đặc trưng (Feature Space) (Thời lượng: ~30s)
-
-**Giọng đọc & Phụ đề:**
-25. "Tất nhiên, một điểm ảnh không làm nên khuôn mặt."
-26. "Ta chia bức ảnh LBP thành một tấm lưới các ô vuông nhỏ."
-27. "Tại mỗi ô, ta thống kê lại tần suất xuất hiện của các mã LBP thành biểu đồ Histogram."
-28. "Cuối cùng, móc nối tất cả các biểu đồ này lại với nhau..."
-29. "Bùm! Ta thu được một Feature Vector khổng lồ."
-30. "Đây chính là 'chữ ký' định danh độc nhất của khuôn mặt đó..."
-31. "...hoàn toàn miễn nhiễm với ánh sáng, sẵn sàng cho AI nhận dạng."
-32. "Đơn giản, hiệu quả và thanh lịch. Đó là Local Binary Patterns!"
+*Kịch bản này đồng bộ hoàn toàn với file `config/voice_data.json`.*

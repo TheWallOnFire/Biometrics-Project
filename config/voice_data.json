@@ -1,26 +1,37 @@
 {
-  "title_name": "Chào mừng bạn đến với bài tìm hiểu về Local Binary Patterns.",
-  "title_intro": "Trong video này, chúng ta sẽ đi qua 6 phần chính để hiểu sâu về thuật toán này.",
+  "title_name": "Chào bạn! Hôm nay chúng ta sẽ cùng nhau tìm hiểu về một thuật toán rất hay trong nhận dạng khuôn mặt, đó là LBP.",
+  "title_intro": "Mình sẽ chia sẻ với các bạn sáu phần nội dung chính để chúng ta nắm vững kiến thức này nhé.",
   
-  "part_2_list": "Trong thế giới nhận diện khuôn mặt, có rất nhiều thuật toán nổi tiếng như PCA, Eigenfaces, HOG hay SIFT.",
-  "part_2_pick": "Tuy nhiên, hôm nay chúng ta sẽ tập trung vào LBP - một phương pháp cực kỳ mạnh mẽ nhờ tính đơn giản và hiệu quả.",
+  "part_2_list": "Chắc bạn đã nghe qua những cái tên như PCA hay SIFT rồi đúng không? Chúng đều rất nổi tiếng.",
+  "part_2_pick": "Nhưng LBP lại có sức hút riêng nhờ sự đơn giản mà lại vô cùng hiệu quả.",
   
-  "part_3_logic": "Nguyên lý của LBP là so sánh cường độ sáng của một điểm ảnh với các điểm lân cận để tạo ra một mã nhị phân.",
+  "part_3_logic": "Về cơ bản, LBP sẽ so sánh từng điểm ảnh với các điểm xung quanh để tìm ra quy luật của ánh sáng.",
   
-  "demo_1_title": "Ví dụ 1: Tính toán chi tiết.",
-  "demo_1_step_1": "Đầu tiên, ta chọn điểm trung tâm làm ngưỡng.",
-  "demo_1_step_2": "Sau đó, so sánh với các điểm xung quanh.",
-  "demo_1_step_3": "Kết quả so sánh tạo ra chuỗi nhị phân.",
-  "demo_1_step_4": "Kết quả đổi sang thập phân là 240.",
+  "demo_1_title": "Hãy cùng mình thực hiện một phép tính cụ thể để bạn dễ hình dung hơn nhé.",
+  "demo_1_step_1": "Đầu tiên, chúng mình sẽ lấy điểm ở chính giữa để làm chuẩn.",
+  "demo_1_step_2": "Sau đó, ta đem so sánh nó với tám điểm bao quanh.",
+  "demo_1_step_3": "Từ đó, một chuỗi số nhị phân sẽ được hình thành.",
+  "demo_1_step_4": "Cuối cùng, kết quả là hai trăm bốn mươi.",
   
-  "demo_2_title": "Ví dụ 2: Khả năng kháng ánh sáng.",
-  "demo_2_step_1": "Khi tăng độ sáng, ngưỡng sẽ cao hơn.",
-  "demo_2_robust_result": "Giống hệt lúc nãy.",
-  "demo_2_step_3": "Mã LBP vẫn không thay đổi.",
+  "demo_2_title": "Một ưu điểm tuyệt vời của LBP là nó không hề sợ ánh sáng thay đổi.",
+  "demo_2_step_1": "Bạn thấy đấy, dù mình có tăng độ sáng lên thì các bước so sánh vẫn diễn ra y hệt.",
+  "demo_2_robust_result": "Kết quả vẫn không hề thay đổi so với lúc trước.",
+  "demo_2_step_3": "Điều này chứng tỏ mã LBP cực kỳ ổn định.",
   
-  "pros_cons_title": "Tại sao lại dùng LBP?",
-  "pros_1": "Ưu điểm: Tốc độ xử lý cực nhanh, không phụ thuộc vào cường độ ánh sáng đồng nhất.",
-  "cons_1": "Nhược điểm: Nhạy cảm với nhiễu ở các vùng ảnh phẳng và vector đặc trưng có thể rất lớn.",
+  "app_title": "Vậy thuật toán này được ứng dụng như thế nào trong thực tế?",
+  "uth_one": "Hãy cùng quan sát quy trình bên trong nhé.",
+  "app_uth_2": "Con số hai trăm bốn mươi vừa rồi thực ra chỉ là một phần rất nhỏ thôi.",
+  "app_uth_3": "Máy tính sẽ lặp đi lặp lại việc này trên toàn bộ khuôn mặt của bạn.",
+  "statistic_data": "Sau đó, tất cả sẽ được thống kê lại thật chi tiết.",
+  "uth_five": "Đây chính là mã định danh kỹ thuật số dành riêng cho bạn.",
   
-  "conclusion": "Tóm lại, LBP là một công cụ nền tảng, thanh lịch và vẫn rất hiệu quả trong các ứng dụng thị giác máy tính hiện đại."
+  "match_desc": "Bây giờ, hãy thử so sánh hai bức ảnh của cùng một người nhưng có độ sáng khác nhau.",
+  "match_robust": "Bạn thấy đấy, dù ánh sáng có thay đổi mạnh mẽ đến đâu, mã LBP vẫn giúp máy tính nhận ra họ là một.",
+  "app_result": "Hệ thống đã nhận diện thành công!",
+  
+  "pros_cons_title": "Tất nhiên, cái gì cũng có hai mặt của nó.",
+  "pros_1": "Ưu điểm của LBP là nhanh và không ngại ánh sáng.",
+  "cons_1": "Hạn chế là nó khá nhạy cảm với nhiễu.",
+  
+  "conclusion": "Cảm ơn các bạn đã dành thời gian theo dõi video về LBP của mình nhé."
 }

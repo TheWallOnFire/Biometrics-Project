@@ -220,7 +220,3 @@ __marimo__/
 # Manim generated files
 media/
 source/media/
-*.png
-*.jpg
-*.jpeg
-*.mp4

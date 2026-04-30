@@ -1,81 +1,53 @@
-# Biometrics-Project: Trực Quan Hóa Thuật Toán Với Manim
+# LBP Biometrics Animation
 
-Đồ án cá nhân môn **Nhận dạng (CSC14006)** - Khoa CNTT, Trường ĐH KHTN, ĐHQG TP.HCM.
+A professional, automated animation project explaining the **Local Binary Patterns (LBP)** algorithm for facial recognition. Built with Manim and Neural AI narration.
 
-## 1. Giới thiệu
+## 🚀 Features
+- **6-Part Educational Flow**: From basic logic to real-world applications.
+- **AI Narration**: High-quality neural voiceover unified with `vi-VN-NamMinhNeural`.
+- **Dynamic Visuals**: Step-by-step 3x3 grid calculations and illumination robustness proofs.
+- **Multi-Resolution Support**: Render in 480p, 1080p, or 4K.
 
-Đồ án này thực hiện việc trực quan hóa một thuật toán trong lĩnh vực sinh trắc học và nhận dạng mẫu sử dụng thư viện **Manim** (Mathematical Animation Engine). Mục tiêu của đồ án là chuyển đổi một quy trình phức tạp thành ngôn ngữ hình ảnh chuyển động có tính thẩm mỹ và dễ hiểu cho người xem.
-
-Thuật toán được lựa chọn: **Local Binary Patterns (LBP) - Đặc trưng cục bộ**.
-
-## 2. Phân tích thuật toán LBP
-
-### Bài toán
-Trong nhận dạng khuôn mặt (Face Recognition) hoặc phân loại kết cấu (Texture Classification), một thách thức lớn là làm sao rút trích được các đặc trưng mang tính cục bộ (local features) trên khuôn mặt nhưng lại không bị thay đổi hoặc ảnh hưởng bởi sự khác biệt của ánh sáng môi trường. LBP ra đời để giải quyết vấn đề này.
-
-### Cốt lõi của ý tưởng
-Ý tưởng cốt lõi của LBP là tóm tắt cấu trúc cục bộ trong một hình ảnh bằng cách so sánh từng điểm ảnh (pixel) với các điểm lân cận của nó. Bất kỳ giá trị lân cận nào lớn hơn hoặc bằng giá trị trung tâm sẽ được đánh giá trị là `1`, ngược lại là `0`. Sau đó, bằng cách đọc các giá trị `0` và `1` này theo chiều kim đồng hồ, ta có được một chuỗi nhị phân (binary pattern) tương ứng với giá trị lân cận cục bộ đó. 
-
-### Quy trình xử lý
-1. **Lấy cửa sổ 3x3:** Lấy một vùng ma trận 3x3 pixel trên ảnh.
-2. **Ngưỡng hóa (Thresholding):** Lấy giá trị của pixel trung tâm làm ngưỡng. So sánh 8 pixel xung quanh với ngưỡng.
-3. **Mã hóa nhị phân:** Nếu pixel xung quanh có giá trị $\ge$ pixel trung tâm, gán thành `1`. Nếu $<$ pixel trung tâm, gán thành `0`.
-4. **Tính giá trị LBP:** Đọc chuỗi nhị phân (thường là bắt đầu từ góc trên bên trái, theo chiều kim đồng hồ) và chuyển nó thành số thập phân (từ 0 đến 255).
-5. **Gán giá trị:** Thay thế pixel trung tâm ban đầu bằng giá trị thập phân vừa tính được.
-6. **Histogram:** Chia ảnh LBP thu được thành các vùng (cell), tính toán biểu đồ tần suất (Histogram) cho mỗi vùng.
-7. **Vector đặc trưng:** Nối (concatenate) các Histogram cục bộ này lại với nhau để tạo thành một vector đặc trưng duy nhất (Feature Vector) mô tả toàn bộ khuôn mặt.
-
-### Ưu điểm
-- **Kháng ánh sáng tốt:** Vì LBP chỉ quan tâm đến sự chênh lệch độ sáng tương đối (lớn hơn/nhỏ hơn) giữa pixel trung tâm và lân cận, nên các thay đổi ánh sáng đơn điệu không làm thay đổi giá trị LBP.
-- **Tính toán nhanh:** Phép toán so sánh và dịch bit vô cùng đơn giản và tốn ít tài nguyên tính toán.
-- **Biểu diễn kết cấu tốt:** LBP mô tả mạnh mẽ các đặc trưng như cạnh (edges), góc (corners), điểm đốm (spots) hoặc các vùng phẳng (flat areas).
-
-### Hạn chế
-- Nhạy cảm với nhiễu ảnh ngẫu nhiên.
-- Phiên bản LBP cơ bản (3x3) chỉ quan sát được đặc trưng trong không gian rất hẹp (local micro-patterns). Để khắc phục, người ta mở rộng LBP với bán kính $R$ và số điểm lân cận $P$ linh hoạt hơn.
-
-## 3. Cấu trúc thư mục
-
+## 📂 Project Structure
 ```text
 Biometrics-Project/
-│
-├── media/                       # Thư mục chứa video và âm thanh lồng tiếng
-│   └── audio/                   # Các file .mp3 được tự động tạo ra
-│
-├── source/                      # Thư mục mã nguồn Manim
-│   ├── lbp_animation.py         # File chứa class Scene trực quan hoá LBP
-│   ├── utils.py                 # File chứa các hàm hỗ trợ vẽ hình, quản lý Text và Voice
-│   ├── voice_data.json          # Kịch bản chứa nội dung lời thoại lồng tiếng
-│   └── manim.cfg                # Cấu hình Manim (tăng cache, dời media_dir)
-│
-├── url.txt                      # Đường dẫn chia sẻ video đã xuất
-├── README.md                    # File tài liệu phân tích và hướng dẫn (file này)
-└── Đồ án cá nhân.pdf            # File yêu cầu đề bài
+├── assets/             # Images and media (face_portrait.png)
+├── config/             # Configuration files (voice_data.json)
+├── src/
+│   ├── animations/     # Manim animation scripts
+│   ├── scripts/        # Utility scripts (render, refresh)
+│   └── utils/          # Shared helper functions
+├── media/              # Rendered outputs (video, audio)
+├── manim.cfg           # Manim global settings
+└── README.md
 ```
 
-## 4. Hướng dẫn chạy (Export Video)
-
-Bạn cần cài đặt thư viện **Manim** (cùng với FFmpeg và LaTeX nếu cần kết xuất công thức phức tạp) trên máy tính trước khi chạy:
-
+## 🛠️ Installation
+1. Install [Manim](https://docs.manim.community/en/stable/installation.html) and its dependencies (ffmpeg, latex, etc.).
+2. Install Python requirements:
 ```bash
-pip install manim gTTS mutagen opencv-python
+pip install manim edge-tts gtts mutagen numpy opencv-python
 ```
 
-Di chuyển vào thư mục `source` và chạy câu lệnh sau để render video:
+## 🎬 How to Use
 
-```bash
-manim -pqh source/lbp_animation.py LBPAnimation
+### 1. Rendering the Video
+The easiest way to render is using our interactive menu:
+```powershell
+python src/scripts/render.py
+```
+*Follow the on-screen prompts to choose Low (480p), High (1080p), or 4K resolution.*
+
+### 2. Refreshing Audio
+If you modify the narration script in `config/voice_data.json`, run this to regenerate all audio files:
+```powershell
+python src/scripts/refresh.py
 ```
 
-*Giải thích cờ lệnh:*
-- `-p`: Tự động phát (play) video sau khi kết xuất thành công.
-- `-qh`: Quality High (Độ phân giải 1080p, 60fps). Nếu máy tính cấu hình thấp, bạn có thể thay bằng `-qm` (Medium, 720p 30fps) hoặc `-ql` (Low, 480p 15fps) để render nhanh hơn.
+## 📝 Customization
+- **Narration**: Edit `config/voice_data.json` to change what the AI says.
+- **Visuals**: Modify `src/animations/lbp_animation.py` to adjust the animation steps.
+- **Quality**: Adjust `manim.cfg` for global frame rate and preview settings.
 
-Sau khi hoàn tất kết xuất, video sẽ được tự động lưu trong thư mục `media/` nội bộ.
-
-## 5. Tính năng Tự động Lồng tiếng & Đồng bộ
-
-Dự án này đã được tích hợp hệ thống lồng tiếng (Voiceover) hoàn toàn tự động trong quá trình render video:
-- **Google TTS (`gTTS`)**: Toàn bộ kịch bản từ file `voice_data.json` sẽ tự động được tổng hợp thành giọng đọc tiếng Việt lưu dưới dạng `.mp3`.
-- **Đồng bộ thông minh (`mutagen`)**: Hệ thống tự động đo lường thời lượng của từng file âm thanh tới đơn vị mili-giây và đồng bộ với quá trình kết xuất hình ảnh của Manim. Video sẽ tự động "đóng băng" chờ giọng đọc kết thúc trước khi chuyển cảnh, giúp bạn hoàn toàn không cần phải canh chỉnh thủ công thời gian chờ (`self.wait()`).
-- **Tự động xuống dòng phụ đề**: Các câu thoại quá dài (hơn 60 ký tự) sẽ được module `textwrap` tự động nhận diện và bẻ thành nhiều dòng để hiển thị trọn vẹn và đẹp mắt trên video.
+---
+*Created for the Biometrics course - 2026*

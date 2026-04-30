@@ -159,18 +159,28 @@ async def async_generate_all_audio(voice_data, output_dir="media/audio"):
             else:
                 os.remove(file_path)
             
-        try:
-            print(f"Generating audio for: {key}...")
-            # Unify to a single voice for consistency
-            communicate = edge_tts.Communicate(text, "vi-VN-NamMinhNeural")
-            await communicate.save(file_path)
-            
-            if os.path.exists(file_path) and os.path.getsize(file_path) == 0:
-                os.remove(file_path)
-        except Exception as e:
-            print(f"Error generating {key}: {e}")
-            if os.path.exists(file_path):
-                os.remove(file_path)
+        retries = 3
+        for i in range(retries):
+            try:
+                if i > 0:
+                    print(f"Retrying {key} (Attempt {i+1})...")
+                
+                import asyncio
+                await asyncio.sleep(0.5) # Small delay to avoid rate limiting
+                
+                print(f"Generating audio for: {key}...")
+                communicate = edge_tts.Communicate(text, "vi-VN-NamMinhNeural")
+                await communicate.save(file_path)
+                
+                if os.path.exists(file_path) and os.path.getsize(file_path) > 0:
+                    return # Success
+                
+            except Exception as e:
+                print(f"Attempt {i+1} failed for {key}: {e}")
+                
+        print(f"CRITICAL: Failed to generate {key} after {retries} attempts.")
+        if os.path.exists(file_path):
+            os.remove(file_path)
 
     tasks = []
     for key, text in voice_data.items():
