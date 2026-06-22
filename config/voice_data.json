@@ -2,10 +2,24 @@
   "title_name": "Chào bạn! Hôm nay chúng ta sẽ cùng nhau tìm hiểu về một thuật toán rất hay trong nhận dạng khuôn mặt, đó là LBP.",
   "title_intro": "Mình sẽ chia sẻ với các bạn sáu phần nội dung chính để chúng ta nắm vững kiến thức này nhé.",
   
-  "part_2_list": "Chắc bạn đã nghe qua những cái tên như PCA hay SIFT rồi đúng không? Chúng đều rất nổi tiếng.",
-  "part_2_pick": "Nhưng LBP lại có sức hút riêng nhờ sự đơn giản mà lại vô cùng hiệu quả.",
+  "intro_prob_1": "Trước khi đi sâu vào thuật toán, chúng ta cùng nhìn lại lịch sử nhận dạng khuôn mặt nhé. Bắt đầu từ những năm 60 bằng phương pháp thủ công, đến thập niên 90 là Eigenfaces, và giờ đây là thời đại của Deep Learning.",
+  "intro_prob_2": "Vậy tại sao lại chọn khuôn mặt? Vì đây là đặc điểm sinh trắc học tự nhiên, phi tiếp xúc và mang lại sự tiện lợi tối đa so với vân tay hay mống mắt.",
+  "intro_prob_3": "Công nghệ này được ứng dụng rộng rãi từ Face ID, eKYC cho đến hệ thống an ninh giám sát. Tuy nhiên, nó vẫn nhạy cảm với ánh sáng và tiềm ẩn rủi ro về quyền riêng tư.",
   
-  "part_3_logic": "Về cơ bản, LBP sẽ so sánh từng điểm ảnh với các điểm xung quanh để tìm ra quy luật của ánh sáng.",
+  "algo_compare_1": "Hiện nay, có nhiều thuật toán nhận dạng kinh điển như Eigenfaces, Fisherfaces, nhận dạng vân tay hay mống mắt.",
+  "algo_compare_2": "Mỗi thuật toán đều có điểm mạnh và yếu riêng. Ví dụ Eigenfaces rất tốt nhưng lại bị ảnh hưởng bởi ánh sáng.",
+  "algo_compare_3": "Cho đồ án này, chúng mình đã quyết định chọn thuật toán Local Binary Patterns hay LBP.",
+  "algo_compare_4": "Lý do là vì LBP rất trực quan, dễ kể chuyện và đặc biệt phù hợp để minh họa bằng thư viện animation cho mọi người cùng dễ hiểu.",
+  
+  "core_problem": "Trong thực tế, hình ảnh thường bị ảnh hưởng rất lớn bởi ánh sáng hoặc độ tương phản kém. Vậy làm sao để máy tính trích xuất được đặc trưng mà không bị biến đổi?",
+  "core_idea": "Thuật toán LBP giải quyết bài toán này bằng một ý tưởng cực kỳ thanh lịch: đó là đo lường độ chênh lệch sáng tối tương đối giữa một điểm và các điểm xung quanh, thay vì dùng giá trị ánh sáng tuyệt đối.",
+  "part_3_logic": "Quy trình xử lý gồm sáu bước tuần tự như sau.",
+  "step_1_audio": "Bước một: Xét một cửa sổ cục bộ kích thước ba nhân ba pixel trên ảnh.",
+  "step_2_audio": "Bước hai: Ngưỡng hóa. Lấy giá trị của điểm trung tâm làm mốc, nếu các điểm xung quanh lớn hơn hoặc bằng thì gán là 1, ngược lại là 0.",
+  "step_3_audio": "Bước ba: Mã hóa nhị phân. Đọc các giá trị vừa tạo theo chiều kim đồng hồ để tạo thành một chuỗi tám bit.",
+  "step_4_audio": "Bước bốn: Chuyển chuỗi nhị phân này sang số thập phân từ 0 đến 255.",
+  "step_5_audio": "Bước năm: Tính biểu đồ tần suất Histogram cho từng ô lưới nhỏ trên ảnh.",
+  "step_6_audio": "Bước sáu: Xây dựng vector đặc trưng bằng cách nối tất cả các biểu đồ lại với nhau.",
   
   "demo_1_title": "Hãy cùng mình thực hiện một phép tính cụ thể để bạn dễ hình dung hơn nhé.",
   "demo_1_step_1": "Đầu tiên, chúng mình sẽ lấy điểm ở chính giữa để làm chuẩn.",
@@ -17,21 +31,36 @@
   "demo_2_step_1": "Bạn thấy đấy, dù mình có tăng độ sáng lên thì các bước so sánh vẫn diễn ra y hệt.",
   "demo_2_robust_result": "Kết quả vẫn không hề thay đổi so với lúc trước.",
   "demo_2_step_3": "Điều này chứng tỏ mã LBP cực kỳ ổn định.",
+
+  "circular_intro": "Tuy nhiên, ma trận ba nhân ba truyền thống có một hạn chế là nó chỉ nhìn được một vùng rất hẹp xung quanh điểm ảnh.",
+  "circular_logic": "Để giải quyết vấn đề này, các nhà khoa học đã cải tiến LBP thành dạng hình tròn.",
+  "circular_params": "Bằng cách thay đổi bán kính R và số lượng điểm lấy mẫu P, chúng ta có thể trích xuất đặc trưng ở nhiều quy mô khác nhau, từ chi tiết nhỏ đến các cấu trúc lớn hơn trên khuôn mặt.",
+  
+  "uniform_intro": "Khi số lượng điểm lấy mẫu tăng lên, số lượng mã LBP cũng tăng vọt theo cấp số nhân, khiến dữ liệu trở nên quá cồng kềnh.",
+  "uniform_logic": "Đó là lý do Uniform Patterns ra đời. Chúng ta chỉ tập trung vào những mã nhị phân có tối đa hai lần chuyển đổi giữa không và một.",
+  "uniform_benefit": "Cách làm này giúp giảm số lượng mã từ hai trăm năm mươi sáu xuống chỉ còn năm mươi chín mã, giúp máy tính chạy nhanh hơn rất nhiều mà không làm mất đi độ chính xác.",
   
   "app_title": "Vậy thuật toán này được ứng dụng như thế nào trong thực tế?",
   "uth_one": "Hãy cùng quan sát quy trình bên trong nhé.",
   "app_uth_2": "Con số hai trăm bốn mươi vừa rồi thực ra chỉ là một phần rất nhỏ thôi.",
   "app_uth_3": "Máy tính sẽ lặp đi lặp lại việc này trên toàn bộ khuôn mặt của bạn.",
-  "statistic_data": "Sau đó, tất cả sẽ được thống kê lại thật chi tiết.",
-  "uth_five": "Đây chính là mã định danh kỹ thuật số dành riêng cho bạn.",
+  "statistic_data": "Sau đó, ảnh khuôn mặt được chia thành các ô lưới nhỏ. Tại mỗi ô, một biểu đồ tần suất sẽ được tính toán để ghi lại mật độ các mã LBP.",
+  "uth_five": "Bằng cách nối tất cả các biểu đồ này lại, chúng ta có được một vector đặc trưng duy nhất. Đây chính là mã định danh kỹ thuật số dành riêng cho bạn.",
   
   "match_desc": "Bây giờ, hãy thử so sánh hai bức ảnh của cùng một người nhưng có độ sáng khác nhau.",
   "match_robust": "Bạn thấy đấy, dù ánh sáng có thay đổi mạnh mẽ đến đâu, mã LBP vẫn giúp máy tính nhận ra họ là một.",
   "app_result": "Hệ thống đã nhận diện thành công!",
   
-  "pros_cons_title": "Tất nhiên, cái gì cũng có hai mặt của nó.",
-  "pros_1": "Ưu điểm của LBP là nhanh và không ngại ánh sáng.",
-  "cons_1": "Hạn chế là nó khá nhạy cảm với nhiễu.",
+  "pros_cons_title": "Dù rất mạnh mẽ, thuật toán nào cũng có điểm mạnh và điểm yếu.",
+  "pro_1": "Ưu điểm đầu tiên: Nó kháng sự thay đổi ánh sáng đơn điệu cực kỳ tốt.",
+  "pro_2": "Thứ hai: Độ phức tạp tính toán rất thấp, phù hợp chạy trên phần cứng yếu.",
+  "pro_3": "Thứ ba: Khả năng mô tả các kết cấu vi mô xuất sắc.",
+  "con_1": "Về nhược điểm: Đầu tiên là nó rất nhạy cảm với nhiễu cục bộ.",
+  "con_2": "Thứ hai: Không gian quan sát ba nhân ba quá hẹp, không bắt được cấu trúc lớn.",
+  "con_3": "Thứ ba: Làm mất đi thông tin sắc độ toàn cục của bức ảnh.",
+  "con_4": "Và cuối cùng: Sinh ra vector đặc trưng quá lớn và cồng kềnh.",
   
-  "conclusion": "Cảm ơn các bạn đã dành thời gian theo dõi video về LBP của mình nhé."
+  "conclusion_1": "Tóm lại, Local Binary Patterns là một thuật toán kinh điển và mang tính nền tảng trong lĩnh vực thị giác máy tính.",
+  "conclusion_2": "Dù ngày nay Deep Learning đã chiếm ưu thế, LBP vẫn giữ được giá trị cốt lõi nhờ sự thanh lịch trong tư duy toán học và khả năng chạy mượt mà trên các thiết bị cấu hình yếu.",
+  "conclusion_3": "Hy vọng video này đã giúp bạn có một cái nhìn trực quan và sâu sắc hơn về thuật toán tuyệt vời này. Cảm ơn các bạn đã quan tâm theo dõi!"
 }

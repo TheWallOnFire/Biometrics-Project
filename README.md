@@ -1,53 +1,50 @@
-# LBP Biometrics Animation
+# LBP Animation Project (Biometrics)
 
-A professional, automated animation project explaining the **Local Binary Patterns (LBP)** algorithm for facial recognition. Built with Manim and Neural AI narration.
+Dự án trực quan hóa thuật toán **Local Binary Patterns (LBP)** sử dụng thư viện **Manim**. Video được thiết kế theo phong cách giáo dục hiện đại (tương tự 3Blue1Brown) nhằm giải thích cơ chế trích xuất đặc trưng khuôn mặt một cách trực quan và sinh động.
 
-## 🚀 Features
-- **6-Part Educational Flow**: From basic logic to real-world applications.
-- **AI Narration**: High-quality neural voiceover unified with `vi-VN-NamMinhNeural`.
-- **Dynamic Visuals**: Step-by-step 3x3 grid calculations and illumination robustness proofs.
-- **Multi-Resolution Support**: Render in 480p, 1080p, or 4K.
+## 🚀 Tính năng nổi bật
+- **Nội dung chuyên sâu**: Bao gồm LBP cơ bản, Circular LBP và Uniform Patterns.
+- **Thời lượng tối ưu**: Đảm bảo trên 5 phút theo yêu cầu đồ án.
+- **Thuyết minh AI**: Giọng đọc `NamMinhNeural` tự nhiên và chuyên nghiệp.
+- **Phụ đề tự động**: Phụ đề tiếng Việt xuyên suốt video, hỗ trợ tiếp cận tốt hơn.
 
-## 📂 Project Structure
-```text
-Biometrics-Project/
-├── assets/             # Images and media (face_portrait.png)
-├── config/             # Configuration files (voice_data.json)
-├── src/
-│   ├── animations/     # Manim animation scripts
-│   ├── scripts/        # Utility scripts (render, refresh)
-│   └── utils/          # Shared helper functions
-├── media/              # Rendered outputs (video, audio)
-├── manim.cfg           # Manim global settings
-└── README.md
-```
+## 🛠️ Hướng dẫn cài đặt
 
-## 🛠️ Installation
-1. Install [Manim](https://docs.manim.community/en/stable/installation.html) and its dependencies (ffmpeg, latex, etc.).
-2. Install Python requirements:
+Đảm bảo bạn đã cài đặt Python 3.8+ và Manim. Sau đó cài đặt các thư viện cần thiết:
 ```bash
-pip install manim edge-tts gtts mutagen numpy opencv-python
+pip install manim edge-tts mutagen numpy opencv-python
 ```
 
-## 🎬 How to Use
+## 🎬 Cách chạy và Xuất video
 
-### 1. Rendering the Video
-The easiest way to render is using our interactive menu:
-```powershell
-python src/scripts/render.py
+### 1. Render Video
+Để xuất video chất lượng cao (1080p, 60fps), sử dụng lệnh:
+```bash
+manim -pkh src/animations/lbp_animation.py LBPAnimation
 ```
-*Follow the on-screen prompts to choose Low (480p), High (1080p), or 4K resolution.*
+- `-p`: Xem ngay sau khi render xong.
+- `-k`: Giữ lại các file trung gian.
+- `-h`: Chất lượng High (1080p). Nếu muốn render nhanh bản nháp, dùng `-ql` (Low Quality).
 
-### 2. Refreshing Audio
-If you modify the narration script in `config/voice_data.json`, run this to regenerate all audio files:
-```powershell
-python src/scripts/refresh.py
+### 2. Chuẩn bị nộp bài (Submission)
+Dự án đã tích hợp sẵn công cụ đóng gói theo đúng yêu cầu trong PDF:
+```bash
+python src/scripts/submission_prepare.py
 ```
+- Công cụ sẽ tạo một thư mục mang tên MSSV (ví dụ: `22127000`).
+- Bên trong chứa folder `source` (mã nguồn) và file `url.txt`.
+- **Lưu ý**: Hãy sửa MSSV của bạn trong file `src/scripts/submission_prepare.py` trước khi chạy.
 
-## 📝 Customization
-- **Narration**: Edit `config/voice_data.json` to change what the AI says.
-- **Visuals**: Modify `src/animations/lbp_animation.py` to adjust the animation steps.
-- **Quality**: Adjust `manim.cfg` for global frame rate and preview settings.
+## 📌 Hashtags bắt buộc
+Khi đăng tải video, vui lòng sử dụng các hashtag sau để đảm bảo tính lan tỏa:
+`#fithcmus #patternrecognition #ai #ml`
+
+## 📁 Cấu trúc thư mục
+- `src/animations/`: Chứa kịch bản Manim chính (`lbp_animation.py`).
+- `src/utils/`: Chứa các hàm bổ trợ vẽ lưới, xử lý âm thanh và phụ đề.
+- `config/`: Chứa file `voice_data.json` (nội dung thuyết minh).
+- `assets/`: Hình ảnh và tài nguyên sử dụng trong video.
+- `media/`: Kết quả render (video và audio).
 
 ---
-*Created for the Biometrics course - 2026*
+*Dự án được thực hiện cho môn học Nhận dạng (Biometrics) - 2026*

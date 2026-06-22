@@ -11,27 +11,29 @@ class SubtitleManager:
 
     def show(self, text_str):
         if not text_str:
-            self.clear()
             return
             
         import textwrap
-        wrapped_text = "\n".join(textwrap.wrap(text_str, width=60))
+        wrapped_text = "\n".join(textwrap.wrap(text_str, width=50))
             
-        new_sub = Text(wrapped_text, font_size=24, color=WHITE).to_edge(DOWN, buff=0.3)
+        new_sub = Text(wrapped_text, font_size=24, color=WHITE).to_edge(DOWN, buff=0.4)
         new_sub.set_z_index(100)
-        new_sub.add_background_rectangle(color=BLACK, opacity=0.3, buff=0.15)
-        new_sub.background_rectangle.set_z_index(99)
         
-        if len(self.current_sub) > 0:
-            self.scene.play(ReplacementTransform(self.current_sub, new_sub), run_time=0.5)
+        # Thêm background mờ để dễ đọc hơn
+        bg = SurroundingRectangle(new_sub, color=BLACK, fill_color=BLACK, fill_opacity=0.6, buff=0.2)
+        bg.set_z_index(99)
+        full_sub = VGroup(bg, new_sub)
+        
+        if hasattr(self, "current_full_sub") and len(self.current_full_sub) > 0:
+            self.scene.play(ReplacementTransform(self.current_full_sub, full_sub), run_time=0.5)
         else:
-            self.scene.play(FadeIn(new_sub), run_time=0.5)
-        self.current_sub = new_sub
+            self.scene.play(FadeIn(full_sub), run_time=0.5)
+        self.current_full_sub = full_sub
 
     def clear(self):
-        if len(self.current_sub) > 0:
-            self.scene.play(FadeOut(self.current_sub), run_time=0.5)
-            self.current_sub = VGroup()
+        if hasattr(self, "current_full_sub") and len(self.current_full_sub) > 0:
+            self.scene.play(FadeOut(self.current_full_sub), run_time=0.5)
+            self.current_full_sub = VGroup()
 
 
 def calculate_lbp_pixel(img, x, y):
@@ -143,6 +145,22 @@ def create_3x3_grid(values):
             cells.append(cell)
             texts.append(text)
     return grid, cells, texts
+
+def create_circular_lbp_grid(radius=2, num_points=8):
+    """Tạo minh họa Circular LBP với bán kính R và số điểm P."""
+    grid = VGroup()
+    center_dot = Dot(color=YELLOW, radius=0.1)
+    circle = Circle(radius=radius, color=BLUE, stroke_width=2, stroke_opacity=0.5)
+    
+    dots = VGroup()
+    for i in range(num_points):
+        angle = i * (2 * PI / num_points)
+        pos = radius * (RIGHT * np.cos(angle) + UP * np.sin(angle))
+        dot = Dot(pos, color=WHITE, radius=0.08)
+        dots.add(dot)
+        
+    grid.add(circle, center_dot, dots)
+    return grid, center_dot, dots, circle
 
 async def async_generate_all_audio(voice_data, output_dir="media/audio"):
     """Core async function to generate audio files."""

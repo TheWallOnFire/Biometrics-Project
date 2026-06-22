@@ -70,7 +70,7 @@ Quy trình để trích xuất đặc trưng khuôn mặt/kết cấu bằng LBP
 
 ## 5. Hạn chế của LBP
 
-Dù rất mạnh mẽ, LBP vẫn tồn tại các điểm yếu chí mạng:
+Dù rất mạnh mẽ, LBP vẫn tồn tại các điểm yếu chí mạng:,
 
 1. **Nhạy cảm với nhiễu cục bộ (Noise Sensitivity):**
    Trong ma trận $3 \times 3$, chỉ cần một pixel lân cận bị nhiễu làm nó vượt ngưỡng hoặc rớt ngưỡng, một bit sẽ bị lật (từ 0 thành 1 hoặc ngược lại). Sự lật bit này có thể làm thay đổi hoàn toàn giá trị thập phân của toàn bộ mã LBP (ví dụ `10000000` = 128 khác hoàn toàn `00000000` = 0).

@@ -2,6 +2,35 @@
 
 Trong khuôn khổ môn học Nhận dạng và các tài liệu tham khảo cốt lõi (*Handbook of Biometrics* và *Handbook of Face Recognition 2nd Edition*), có rất nhiều thuật toán kinh điển được trình bày. Dưới đây là việc liệt kê các lựa chọn khả thi, so sánh, và lý do cuối cùng dẫn đến việc chọn **Local Binary Patterns (LBP)**.
 
+## Giới thiệu vấn đề
+
+### Tại sao lại cần nhận dạng khuôn mặt?
+
+**1. Lịch sử của nhận dạng khuôn mặt:**
+Nhận dạng khuôn mặt bắt đầu được nghiên cứu từ những năm 1960 với hệ thống bán tự động của Woodrow Wilson Bledsoe, yêu cầu con người đánh dấu các điểm đặc trưng (mắt, mũi, miệng) trên ảnh bằng tay. Đến những năm 1990, sự ra đời của **Eigenfaces** (Sirovich và Kirby) đã đánh dấu bước ngoặt khi hệ thống có thể tự động trích xuất đặc trưng bằng đại số tuyến tính. Sau đó, **Local Binary Patterns (LBP)** xuất hiện vào đầu những năm 2000 như một phương pháp tối ưu đặc trưng cục bộ. Đến hiện tại, với sự bùng nổ của Deep Learning (Mạng nơ-ron tích chập CNN), nhận dạng khuôn mặt đã đạt độ chính xác vượt qua khả năng của con người.
+
+**2. Tại sao lại chọn khuôn mặt làm sinh trắc học?**
+Khuôn mặt là đặc điểm sinh trắc học tự nhiên và ít mang tính xâm phạm nhất. Không giống như vân tay hay mống mắt (đòi hỏi sự hợp tác tích cực từ người dùng và thiết bị quét chuyên dụng tiếp xúc gần), khuôn mặt có thể được nhận dạng từ xa một cách thụ động bằng camera thông thường. Điều này mang lại sự tiện lợi tối đa và mô phỏng chính xác cách con người nhận diện nhau trong giao tiếp hàng ngày.
+
+**3. Ứng dụng của nhận dạng khuôn mặt:**
+Công nghệ này hiện hữu mạnh mẽ trong đời sống hiện đại:
+- **Xác thực thiết bị cá nhân:** Mở khóa điện thoại (Face ID), máy tính (Windows Hello).
+- **An ninh và kiểm soát ra vào:** Chấm công nhân viên, kiểm tra hành khách tại sân bay, nhận diện đối tượng theo dõi qua camera công cộng.
+- **Tài chính - Ngân hàng (eKYC):** Mở tài khoản trực tuyến, xác thực thanh toán điện tử.
+- **Phân tích dữ liệu & Giải trí:** Các bộ lọc (filters) AR trên mạng xã hội, phân tích cảm xúc khách hàng trong bán lẻ.
+
+### Ưu và nhược điểm của nhận dạng khuôn mặt
+
+**Ưu điểm:**
+- **Phi tiếp xúc (Non-contact):** Vệ sinh, an toàn và thân thiện, đặc biệt hữu ích trong các bối cảnh y tế hoặc chống dịch bệnh.
+- **Nhận dạng từ xa & Tự động hóa:** Có thể xử lý đồng thời nhiều đối tượng trong khung hình mà không làm gián đoạn luồng di chuyển của họ.
+- **Không yêu cầu phần cứng quá đắt đỏ:** Chỉ cần một camera tiêu chuẩn (Webcam, CCTV) là đã có thể triển khai ở mức cơ bản, thay vì các cảm biến laser mống mắt đắt tiền.
+
+**Nhược điểm:**
+- **Nhạy cảm với môi trường và ngoại cảnh:** Độ chính xác dễ suy giảm nghiêm trọng khi thay đổi ánh sáng (ngược sáng, thiếu sáng), góc chụp lệch, biểu cảm khuôn mặt biến đổi, hoặc bị che khuất bởi phụ kiện (kính, khẩu trang).
+- **Vấn đề Quyền riêng tư (Privacy):** Việc có thể thu thập khuôn mặt thụ động dẫn đến rủi ro lạm dụng giám sát hàng loạt (mass surveillance).
+- **Rủi ro giả mạo (Spoofing):** Nếu không tích hợp công nghệ phát hiện thực thể sống (Liveness Detection), hệ thống dễ bị đánh lừa bởi ảnh in độ phân giải cao hoặc video phát lại từ điện thoại.
+
 ---
 
 ## 1. Các lựa chọn thuật toán khả thi
@@ -32,13 +61,15 @@ Dựa vào các giáo trình, ta có một số thuật toán kinh điển và p
 
 ## 2. So sánh và Lý do chọn Local Binary Patterns (LBP)
 
-Mục tiêu tối thượng của đồ án không chỉ là lập trình thuật toán, mà là **trực quan hóa thuật toán đó bằng thư viện Manim** thành một video mạch lạc, dễ hiểu theo phong cách 3Blue1Brown.
+So sánh các thuật toán:
 
-| Thuật toán | Mức độ phức tạp toán học | Tính khả thi khi diễn hoạt (Animation) bằng Manim | Đánh giá cho đồ án |
+| Thuật toán | Điểm mạnh | Điểm yếu | Lý do chọn |
 | :--- | :--- | :--- | :--- |
-| **Eigenfaces / Fisherfaces** | Rất cao (Đại số tuyến tính phức tạp: Covariance Matrix, Eigenvectors) | Trung bình. Rất khó để minh họa quá trình tính toán PCA trên một ảnh lớn mà không làm người xem rối mắt. Cần vẽ nhiều không gian vector. | Hơi hàn lâm, khó giữ sự tập trung của khán giả đại chúng. |
-| **Minutiae / Iris** | Khá cao (Bộ lọc Gabor, Xử lý hình thái học) | Khó. Manim mạnh về toán học hình học và ma trận, việc xử lý và vẽ lại đường vân tay (curves) rất tốn công và khó đẹp. | Không tối ưu cho Manim. |
-| **LBP (Được chọn)** | Rất thấp (Chỉ có phép toán So sánh >, < và Đổi cơ số) | **Cực kỳ xuất sắc.** LBP vận hành ngay trên một ma trận ô vuông (Grid) 3x3 nhỏ gọn. | **Hoàn hảo.** Dễ dàng biến đổi màu sắc, dịch chuyển ô, tạo hiệu ứng đếm số nhị phân. |
+| **Eigenfaces (PCA)** | Dễ cài đặt, giảm chiều dữ liệu tốt. | Bị ảnh hưởng mạnh bởi ánh sáng, góc chụp. | Khó trực quan hóa bằng Manim do liên quan nhiều đến đại số tuyến tính thay vì hình ảnh trực quan. |
+| **Fisherfaces (LDA)** | Khắc phục được nhược điểm ánh sáng của PCA, phân lớp tốt hơn. | Cần nhiều dữ liệu mẫu cho mỗi lớp để huấn luyện hiệu quả. | Giống PCA, nặng về toán ma trận, khó biểu diễn bằng animation. |
+| **Minutiae (Vân tay)** | Độ chính xác rất cao, chuẩn công nghiệp. | Yêu cầu thiết bị thu nhận phần cứng chuyên dụng, ảnh hưởng bởi vết xước/bẩn. | Đặc trưng vân tay khá phức tạp để vẽ và giải thích từng bước. |
+| **Iris Recognition** | Không thể giả mạo, ổn định theo thời gian. | Yêu cầu camera hồng ngoại, khó lấy mẫu. | Biến đổi Gabor 2D cực kỳ khó hình dung và minh họa qua video 2D. |
+| **LBP (Khuôn mặt)** | Rất nhẹ, tính toán nhanh, bất biến với thay đổi ánh sáng đơn điệu. | Nhạy cảm với nhiễu (noise), chỉ lấy được đặc trưng cục bộ hẹp. | **Được chọn.** Vì LBP rất trực quan (so sánh ma trận 3x3), dễ dàng vẽ animation bằng Manim và cực kỳ dễ hiểu cho người xem. |
 
 ### Tại sao lại chọn LBP?
 - **Khả năng kể chuyện (Storytelling) cao:** LBP đi từ một bài toán vật lý rất trực quan: "Làm sao để một cái máy tính hiểu được đâu là góc cạnh, đâu là mặt phẳng trên ảnh rổ rá, da người?". Từ đó đưa ra giải pháp so sánh số lớn bé rất tự nhiên. Người xem không cần biết Toán cấp cao vẫn hiểu được.
@@ -59,3 +90,5 @@ Dù là thuật toán phù hợp nhất để làm đồ án trực quan hóa, b
    - LBP hoàn toàn loại bỏ cường độ sáng tuyệt đối (chỉ lấy chênh lệch tương đối). Ở một số bài toán, độ sáng toàn cục lại chứa thông tin quan trọng để phân loại.
 4. **Kích thước Vector Đặc trưng lớn:** 
    - Khi chia ảnh ra nhiều vùng (regions) để tính Histogram, nếu chia quá nhỏ, chuỗi vector nối lại sẽ rất dài, dẫn đến tốn bộ nhớ và chậm chạp trong quá trình huấn luyện mô hình phân loại phía sau.
+
+Thêm phần step2.md vào video: phát biểu bài toán, ý tưởng, quy trình xử lý + 2 ví dụ demo đơn giản, đánh giá + nhạn xét ưu và nhược điểm,
