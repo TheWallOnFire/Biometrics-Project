@@ -1,50 +1,23 @@
-# LBP Animation Project (Biometrics)
+# Đồ án cá nhân môn học Nhận dạng
+- MSSV: 23120105
+- Tên: Huỳnh Mạnh Tường
+- Lớp: 23CTT2
 
-Dự án trực quan hóa thuật toán **Local Binary Patterns (LBP)** sử dụng thư viện **Manim**. Video được thiết kế theo phong cách giáo dục hiện đại (tương tự 3Blue1Brown) nhằm giải thích cơ chế trích xuất đặc trưng khuôn mặt một cách trực quan và sinh động.
+# Video
+https://youtu.be/coH1ep8uJEk
 
-## 🚀 Tính năng nổi bật
-- **Nội dung chuyên sâu**: Bao gồm LBP cơ bản, Circular LBP và Uniform Patterns.
-- **Thời lượng tối ưu**: Đảm bảo trên 5 phút theo yêu cầu đồ án.
-- **Thuyết minh AI**: Giọng đọc `NamMinhNeural` tự nhiên và chuyên nghiệp.
-- **Phụ đề tự động**: Phụ đề tiếng Việt xuyên suốt video, hỗ trợ tiếp cận tốt hơn.
 
-## 🛠️ Hướng dẫn cài đặt
-
-Đảm bảo bạn đã cài đặt Python 3.8+ và Manim. Sau đó cài đặt các thư viện cần thiết:
+# Thư viện
 ```bash
-pip install manim edge-tts mutagen numpy opencv-python
+pip install -r requirements.txt
 ```
 
-## 🎬 Cách chạy và Xuất video
-
-### 1. Render Video
-Để xuất video chất lượng cao (1080p, 60fps), sử dụng lệnh:
+# Hướng dẫn cách chạy
+1. Mở Terminal/Command Prompt tại thư mục giải nén (thư mục đang chứa file `url.txt` này).
+2. Chạy lệnh sau để xuất video (chất lượng 1080p, 60fps):
 ```bash
-manim -pkh src/animations/lbp_animation.py LBPAnimation
+manim -pqh src/animations/lbp_animation.py LBPAnimation
 ```
-- `-p`: Xem ngay sau khi render xong.
-- `-k`: Giữ lại các file trung gian.
-- `-h`: Chất lượng High (1080p). Nếu muốn render nhanh bản nháp, dùng `-ql` (Low Quality).
 
-### 2. Chuẩn bị nộp bài (Submission)
-Dự án đã tích hợp sẵn công cụ đóng gói theo đúng yêu cầu trong PDF:
-```bash
-python src/scripts/submission_prepare.py
-```
-- Công cụ sẽ tạo một thư mục mang tên MSSV (ví dụ: `22127000`).
-- Bên trong chứa folder `source` (mã nguồn) và file `url.txt`.
-- **Lưu ý**: Hãy sửa MSSV của bạn trong file `src/scripts/submission_prepare.py` trước khi chạy.
-
-## 📌 Hashtags bắt buộc
-Khi đăng tải video, vui lòng sử dụng các hashtag sau để đảm bảo tính lan tỏa:
-`#fithcmus #patternrecognition #ai #ml`
-
-## 📁 Cấu trúc thư mục
-- `src/animations/`: Chứa kịch bản Manim chính (`lbp_animation.py`).
-- `src/utils/`: Chứa các hàm bổ trợ vẽ lưới, xử lý âm thanh và phụ đề.
-- `config/`: Chứa file `voice_data.json` (nội dung thuyết minh).
-- `assets/`: Hình ảnh và tài nguyên sử dụng trong video.
-- `media/`: Kết quả render (video và audio).
-
----
-*Dự án được thực hiện cho môn học Nhận dạng (Biometrics) - 2026*
+- Nếu gặp lỗi "Manim command not found", hãy đảm bảo rằng bạn đã kích hoạt môi trường ảo `manim` bằng lệnh `conda activate manim` (hoặc `source manim/bin/activate` trên Windows/Linux).
+- Nếu gặp lỗi về đường dẫn hoặc file không tồn tại, hãy kiểm tra lại thư mục hiện tại trong Terminal đã trỏ đúng vào thư mục chứa file này chưa.
